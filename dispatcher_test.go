@@ -370,11 +370,13 @@ func TestDispatcherEchoGobEncoding(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Unexpected error: [%s]", err)
 		}
+
 		rest, ok := res.(*time.Time)
 		if !ok {
 			t.Fatalf("Unexpected response type: %T. Expected %T", rest, &tt)
 		}
-		if *rest != tt {
+
+		if !tt.Equal(*rest) {
 			t.Fatalf("Unexpected response: [%#v]. Expected [%#v]", *rest, tt)
 		}
 	})
@@ -385,8 +387,8 @@ func TestDispatcherEchoEmptyStruct(t *testing.T) {
 	d.AddFunc("Echo", func(request map[string]struct{}) map[string]struct{} { return request })
 	testDispatcherFunc(t, d, func(dc *DispatcherClient) {
 		m := map[string]struct{}{
-			"foo": struct{}{},
-			"bar": struct{}{},
+			"foo": {},
+			"bar": {},
 		}
 		res, err := dc.Call("Echo", m)
 		if err != nil {
@@ -487,10 +489,12 @@ func TestDispatcherStructArgCall(t *testing.T) {
 		if res, err = dc.Call("fooBar", *reqs); err != nil {
 			t.Fatalf("Unexpected error: [%s]", err)
 		}
+
 		if ress, ok = res.(*ResponseArg); !ok {
 			t.Fatalf("Unexpected response type: %T. Expected *ResponseArg", ress)
 		}
-		if ress.C != reqs.B || ress.D != reqs.A || ress.T != tt {
+
+		if ress.C != reqs.B || ress.D != reqs.A || !tt.Equal(ress.T) {
 			t.Fatalf("Unexpected response: [%+v]. Expected &ResponseArg{C:%s, D:%d, T:%s}", ress, reqs.B, reqs.A, tt)
 		}
 	})

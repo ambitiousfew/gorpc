@@ -1,5 +1,6 @@
 gorpc
 =====
+> **NOTE**: This repo is a modified fork of [valyala/gorpc](https://github.com/valyala/gorpc/tree/master)
 
 Simple, fast and scalable golang RPC library for high load and microservices.
 

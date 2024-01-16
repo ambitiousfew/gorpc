@@ -1128,7 +1128,7 @@ func TestEchoHandler(t *testing.T) {
 	if !ok {
 		t.Fatalf("Unexpected response type: %T. Expected time.Time", resp)
 	}
-	if *expT != tt {
+	if !tt.Equal(*expT) {
 		t.Fatalf("Unexpected value returned: %s. Expected %s", *expT, tt)
 	}
 
@@ -1141,7 +1141,7 @@ func TestEchoHandler(t *testing.T) {
 	if !ok {
 		t.Fatalf("Unexpected response type: %T. Expected SS", resp)
 	}
-	if expSs.A != 432 || expSs.B != "ssd" || expSs.T != tt {
+	if expSs.A != 432 || expSs.B != "ssd" || !tt.Equal(expSs.T) {
 		t.Fatalf("Unexpected value returned: %#v. Expected %#v", expSs, sS)
 	}
 }
